@@ -102,7 +102,7 @@
                     {{ range .DocumentList.Documents }}
                         <tr class="govuk-table__row" data-direction="{{ .Direction.Key }}">
                             <td class="govuk-table__cell">
-                                {{ if not (eq .IsInfected true) }}
+                                {{ if eq .IsInfected false }}
                                     {{ if eq .MimeType "application/pdf" }}
                                         <div class="govuk-checkboxes govuk-checkboxes--small" data-module="govuk-checkboxes">
                                             <div class="govuk-checkboxes__item">
@@ -120,8 +120,9 @@
                                     {{ end }}
                                 {{ end }}
                             </td>
-                            <td class="govuk-table__cell" data-sort-type="name" data-sort-value="{{ .FriendlyDescription }}">[{{ if not (eq .IsInfected true) }}{{ .Direction.Translation }}{{ if .NotifyStatus}} - {{ camelcaseToSentence .NotifyStatus }}{{end}}{{else}}<span class="fileIsInfected">Infected</span>{{end}}]
+                            <td class="govuk-table__cell" data-sort-type="name" data-sort-value="{{ .FriendlyDescription }}">[{{ if eq .IsInfected false }}{{ .Direction.Translation }}{{ if .NotifyStatus}} - {{ camelcaseToSentence .NotifyStatus }}{{end}}{{else}}<span class="fileIsInfected">Virus detected</span>{{end}}]
                                 <br>
+                            {{ if eq .IsInfected false}}
                                 {{ if eq .MimeType "application/pdf"}}
                                     {{ if eq $.Comparing true }}
                                         <a class="govuk-link" href="{{ prefix ( index $.CompareURLs .UUID )}}">{{ .FriendlyDescription }}</a>
@@ -131,6 +132,9 @@
                                 {{ else }}
                                     <a class="govuk-link" href="{{ sirius (printf "/lpa-api/v1/documents/%s/download" .UUID) }}" download="">{{ .FriendlyDescription }}</a>
                                 {{ end }}
+                            {{ else }}
+                                <div>{{ .FriendlyDescription }}</div>
+                            {{ end }}
                             </td>
                             {{ if $multiCaseSelected }}
                                 <td class="govuk-table__cell" data-sort-type="case"{{ if gt (len .CaseItems) 0 }} data-sort-value="{{ (index .CaseItems 0).UID }}"{{ end }}>

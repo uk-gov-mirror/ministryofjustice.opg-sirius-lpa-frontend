@@ -143,7 +143,7 @@ class PDFViewer {
       const checkFileInfected = await fetch(this.url, { method: "HEAD" });
       if (checkFileInfected.status === 400) {
         this.showError(
-          "This file is blocked. A suspected virus has been detected. Please request a different file from the sender and notify the Implementation team",
+          "This file is blocked. A suspected virus has been detected. Please request a different file from the sender and notify the Sirius Operations Team",
         );
         return;
       }
@@ -674,7 +674,7 @@ class PDFViewer {
     errorEl.innerHTML = `
       <p class="govuk-error-message">${message}</p>
     `;
-    this.container.appendChild(errorEl);
+    this.canvasContainer.appendChild(errorEl);
   }
 
   handlePageInputKeydown(e) {
